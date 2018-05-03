@@ -1,0 +1,75 @@
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+  ribbon:
+    eager-load:
+      enabled: true
+  routes:
+    yixue-auth:
+      path: /yixue-auth/**
+      service-id: yixue-auth
+      sensitive-headers: '*'
+    yixue-rbac:
+      path:  /yixue-rbac/**
+      service-id: yixue-rbac
+      sensitive-headers: '*'
+    yixue-common:
+      path:  /yixue-common/**
+      service-id: yixue-common
+      sensitive-headers: '*'
+    yixue-member:
+      path:  /yixue-member/**
+      service-id: yixue-member
+      sensitive-headers: '*'
+    yixue-cms:
+      path:  /yixue-cms/**
+      service-id: yixue-cms
+      sensitive-headers: '*'
+    yixue-product:
+      path:  /yixue-product/**
+      service-id: yixue-product
+      sensitive-headers: '*'
+    yixue-order:
+      path:  /yixue-order/**
+      service-id: yixue-order
+      sensitive-headers: '*'
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+feign:
+  hystrix:
+    enabled: true
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+
+logging:
+  config: classpath:logback.xml
+
+jwt:
+  token-header: Authorization
+
+gate:
+  ignore:
+    startWith: /jwt,/webjars/springfox-swagger-ui,/swagger-ui.html,/swagger-resources,/v2/api-docs
+    notPermission: /cms/sys/oss/upload,/dict/item/list
+    notLoginUrl:  /api/jwt/yixue/token,/api/yixue/user/register-code,/api/yixue/user/forgetPasswrod,/api/index,/api/article,/api/article/page,/api/yixue/passport/laiailogin,/api/yixue/passport/login,/api/yixue/passport/register,/api/yixue/passport/register-autologin,/api/article/{*},/api/article/category,/api/yixue/user/save-code,/api/yixue/user/delete-by-mobile-test,/api/serve/page,/api/serve/{*},/api/serve/evaluation/page,/api/hot/sale,/api/serve/tag/list,/api/serve/type/list,/api/yixue/user/forget-password,/api/pay/callback,/api/serve/case/page,/api/serve/case/{*},/api/package/evaluation/page,/api/package/type/list,/api/package/{*},/api/package/page,/api/yixue/miniProInfo/downloadMiniProInfo/{*}/{*},/api/serve/search,/api/yixue/user/area
+
+spring:
+ http:
+    multipart:
+      enabled: true   # 启用http上传处理
+      max-file-size: 5MB # 设置单个文件的最大长度
+      max-request-size: 5MB # 设置最大的请求文件的大小
+
+#################################################################################################################################
+server:
+  port: 8080
+
