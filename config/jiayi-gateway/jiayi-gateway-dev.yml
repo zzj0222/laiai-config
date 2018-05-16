@@ -11,9 +11,9 @@ zuul:
     eager-load:
       enabled: true
   routes:
-    yixue-auth:
-      path: /yixue-auth/**
-      service-id: yixue-auth
+    jiayi-auth:
+      path: /jiayi-auth/**
+      service-id: jiayi-auth
       sensitive-headers: '*'
     yixue-rbac:
       path:  /yixue-rbac/**
@@ -23,19 +23,19 @@ zuul:
       path:  /yixue-common/**
       service-id: yixue-common
       sensitive-headers: '*'
-    yixue-member:
+    jiayi-member:
       path:  /jiayi-member/**
       service-id: jiayi-member
       sensitive-headers: '*'
-    yixue-cms:
+    jiayi-cms:
       path:  /jiayi-cms/**
       service-id: jiayi-cms
       sensitive-headers: '*'
-    yixue-product:
+    jiayi-product:
       path:  /jiayi-product/**
       service-id: jiayi-product
       sensitive-headers: '*'
-    yixue-order:
+    jiayi-order:
       path:  /jiayi-order/**
       service-id: jiayi-order
       sensitive-headers: '*'
