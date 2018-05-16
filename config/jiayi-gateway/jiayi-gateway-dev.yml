@@ -66,7 +66,7 @@ gate:
   ignore:
     startWith: /jwt,/webjars/springfox-swagger-ui,/swagger-ui.html,/swagger-resources,/v2/api-docs,/user/laiaiapplogin
     notPermission: /cms/sys/oss/upload,/dict/item/list
-    notLoginUrl:  /api/jwt/yixue/token,/api/yixue/user/register-code,/api/yixue/user/forgetPasswrod,/api/index,/api/article,/api/article/page,/api/yixue/passport/laiailogin,/api/yixue/passport/login,/api/yixue/passport/register,/api/yixue/passport/register-autologin,/api/article/{*},/api/article/category,/api/yixue/user/save-code,/api/serve/page,/api/serve/{*},/api/serve/evaluation/page,/api/hot/sale,/api/serve/tag/list,/api/serve/type/list,/api/yixue/user/forget-password,/api/pay/callback,/api/serve/case/page,/api/serve/case/{*},/api/package/evaluation/page,/api/package/type/list,/api/package/{*},/api/package/page,/api/yixue/miniProInfo/downloadMiniProInfo/{*}/{*},/api/serve/search,/api/yixue/user/area,/api/wechat/wxOpenId/{*},/api/wechat/wxConfig
+    notLoginUrl:  /api/jwt/jiayi/token,/api/jiayi/user/register-code,/api/jiayi/jiayi/forgetPasswrod,/api/index,/api/jiayi/passport/laiailogin,/api/jiayi/passport/login,/api/jiayi/passport/register,/api/jiayi/passport/register-autologin,/api/jiayi/user/save-code,/api/pay/callback,/api/jiayi/user/area,/api/wechat/wxOpenId/{*},/api/wechat/wxConfig
 
 spring:
  http:
