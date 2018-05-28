@@ -15,6 +15,10 @@ zuul:
       path: /jiayi-auth/**
       service-id: jiayi-auth
       sensitive-headers: '*'
+    yixue-auth:
+        path: /yixue-auth/**
+        service-id: yixue-auth
+        sensitive-headers: '*'
     yixue-rbac:
       path:  /yixue-rbac/**
       service-id: yixue-rbac
