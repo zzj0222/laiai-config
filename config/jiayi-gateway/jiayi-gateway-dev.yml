@@ -70,7 +70,7 @@ gate:
   ignore:
     startWith: /jwt,/webjars/springfox-swagger-ui,/swagger-ui.html,/swagger-resources,/v2/api-docs,/user/laiaiapplogin
     notPermission: /cms/sys/oss/upload,/dict/item/list
-    notLoginUrl:  /api/banner/list,/api/commonquestion/page,/api/jiayi/passport/laiaiapplogin,/api/jwt/jiayi/token,/api/jiayi/user/register-code,/api/jiayi/jiayi/forgetPasswrod,/api/index,/api/jiayi/passport/laiailogin,/api/jiayi/passport/login,/api/jiayi/passport/register,/api/jiayi/passport/register-autologin,/api/jiayi/user/save-code,/api/pay/callback,/api/jiayi/user/area,/api/wechat/wxOpenId/{*},/api/wechat/wxConfig
+    notLoginUrl:  /api/degree/find-by-total-credit,/api/banner/list,/api/commonquestion/page,/api/jiayi/passport/laiaiapplogin,/api/jwt/jiayi/token,/api/jiayi/user/register-code,/api/jiayi/jiayi/forgetPasswrod,/api/index,/api/jiayi/passport/laiailogin,/api/jiayi/passport/login,/api/jiayi/passport/register,/api/jiayi/passport/register-autologin,/api/jiayi/user/save-code,/api/pay/callback,/api/jiayi/user/area,/api/wechat/wxOpenId/{*},/api/wechat/wxConfig
 
 spring:
  http:
