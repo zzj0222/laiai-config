@@ -43,6 +43,10 @@ zuul:
       path:  /jiayi-order/**
       service-id: jiayi-order
       sensitive-headers: '*'
+    jiayi-marketing:
+      path:  /jiayi-marketing/**
+      service-id: jiayi-marketing
+      sensitive-headers: '*'
 
 
 hystrix:
