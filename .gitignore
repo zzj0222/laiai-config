@@ -1,24 +1,438 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
+/*
+ Navicat Premium Data Transfer
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
+ Source Server         : 10.101.72.208-sysusermgmt
+ Source Server Type    : PostgreSQL
+ Source Server Version : 90608
+ Source Host           : 10.101.72.208:5432
+ Source Catalog        : hdftbl_db
+ Source Schema         : sysusermgmt
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+ Target Server Type    : PostgreSQL
+ Target Server Version : 90608
+ File Encoding         : 65001
 
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+ Date: 12/12/2019 13:54:52
+*/
+
+
+-- ----------------------------
+-- Sequence structure for ms_sysuser_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "sysusermgmt"."ms_sysuser_id_seq";
+CREATE SEQUENCE "sysusermgmt"."ms_sysuser_id_seq"
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 49
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ms_sysuser_with_right_mapping_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "sysusermgmt"."ms_sysuser_with_right_mapping_id_seq";
+CREATE SEQUENCE "sysusermgmt"."ms_sysuser_with_right_mapping_id_seq"
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 31831
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ms_sysuser_with_role_mapping_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "sysusermgmt"."ms_sysuser_with_role_mapping_id_seq";
+CREATE SEQUENCE "sysusermgmt"."ms_sysuser_with_role_mapping_id_seq"
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 136
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for test_c_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "sysusermgmt"."test_c_id_seq";
+CREATE SEQUENCE "sysusermgmt"."test_c_id_seq"
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 9223372036854775807
+START 110009200
+CACHE 1;
+
+-- ----------------------------
+-- Table structure for ms_sysuser
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser";
+CREATE TABLE "sysusermgmt"."ms_sysuser" (
+  "user_id" int4 NOT NULL DEFAULT nextval('"sysusermgmt".ms_sysuser_id_seq'::regclass),
+  "reg_name" varchar(32) COLLATE "pg_catalog"."default" NOT NULL,
+  "real_name" varchar(64) COLLATE "pg_catalog"."default",
+  "password" varchar(128) COLLATE "pg_catalog"."default",
+  "salt" varchar(50) COLLATE "pg_catalog"."default",
+  "effective_date" date,
+  "expiry_date" date,
+  "user_acc_status" int2 NOT NULL,
+  "id_type" int2 DEFAULT 0,
+  "id_num" varchar(50) COLLATE "pg_catalog"."default",
+  "position" varchar(16) COLLATE "pg_catalog"."default",
+  "phone" varchar(32) COLLATE "pg_catalog"."default",
+  "email" varchar(128) COLLATE "pg_catalog"."default",
+  "login_time" timestamp(6),
+  "logout_time" timestamp(6),
+  "store_id" int4,
+  "merchant_id" int4,
+  "sys_id" int4,
+  "group_id" int4,
+  "remark" text COLLATE "pg_catalog"."default",
+  "delete_flag" bool DEFAULT false,
+  "create_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "create_time" timestamp(6),
+  "update_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "update_time" timestamp(6),
+  "dept_name" varchar(255) COLLATE "pg_catalog"."default",
+  "user_type" int2 NOT NULL
+)
+;
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."user_id" IS '用户ID：
+第8位和9位以上是默认的分表号，
+如分表1，其分表号为11，其数据库初始值是110000001；
+如分表2，其分表号为12，其数据库初始值是120000001；
+…
+如此类推';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."reg_name" IS '用户登录名';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."real_name" IS '真实姓名';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."password" IS '密码：经过md的密码摘要';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."salt" IS '加盐值：随机生成';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."effective_date" IS '账户生效日期';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."expiry_date" IS '账户失效日期';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."user_acc_status" IS '账户状态';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."id_type" IS '证件类型:0：身份证；';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."id_num" IS '证件号码';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."position" IS '职务';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."phone" IS '电话';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."email" IS '电邮';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."login_time" IS '最近登录时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."logout_time" IS '最近登出时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."store_id" IS '所属门店ID';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."merchant_id" IS '所属商户ID';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."sys_id" IS '所属板块ID';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."group_id" IS '所属集团ID';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."remark" IS '备注';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."delete_flag" IS '系统删除标志:FALSE：未删除；
+TRUE：已删除。';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."create_user" IS '创建人:
+0:旧系统导入；
+1:用户自己;
+2:系统维护；
+…恒大员工编号';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."create_time" IS '创建时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."update_user" IS '修改人:
+0:旧系统导入；
+1:用户自己;
+2:系统维护；
+…恒大员工编号';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."update_time" IS '变更时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."dept_name" IS '部门名';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser"."user_type" IS '账号类型, 1:自建账号, 2:Idm内部账号 ';
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser" IS '用户表';
+
+-- ----------------------------
+-- Table structure for ms_sysuser_right
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser_right";
+CREATE TABLE "sysusermgmt"."ms_sysuser_right" (
+  "right_id" int4 NOT NULL DEFAULT nextval('"sysusermgmt".test_c_id_seq'::regclass),
+  "right_type" int2 NOT NULL,
+  "right_code" varchar(50) COLLATE "pg_catalog"."default",
+  "right_name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "right_url" varchar(255) COLLATE "pg_catalog"."default",
+  "right_value" varchar(1024) COLLATE "pg_catalog"."default",
+  "remark" text COLLATE "pg_catalog"."default",
+  "delete_flag" bool NOT NULL DEFAULT false,
+  "create_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "update_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "create_time" timestamp(6),
+  "update_time" timestamp(6)
+)
+;
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."right_id" IS '权限id';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."right_type" IS '"1:菜单类权限（来自菜单类子权限表）；
+2:标签类的权限（来自页面元素类子权限表）；
+3:功能按钮类的权限（来自页面元素类子权限表）；
+4:链接按钮类的权限（来自页面元素类子权限表）；
+5:文件类的权限（来自文件类子权限表）；
+6:数据范围类的权限-可以查看全集团的数据（来自数据类子权限表）；
+7:数据范围类的权限-仅可查看本集团的数据（来自数据类子权限表）；
+8:数据范围类的权限-仅可查看本版块的数据（来自数据类子权限表）；
+9:数据范围类的权限-仅可查看本业态的数据（来自数据类子权限表）；
+10:数据范围类的权限-仅可查看本门店的数据（来自数据类子权限表）；
+11:敏感数据类的权限（来自数据类子权限表）。"';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."right_code" IS '权限code';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."right_name" IS '权限name';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."right_url" IS '权限url';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."right_value" IS '权限value';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."remark" IS '备注';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."delete_flag" IS '系统删除标志';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."create_user" IS '创建人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."update_user" IS '修改人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."create_time" IS '创建时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_right"."update_time" IS '更新时间';
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser_right" IS '权限表';
+
+-- ----------------------------
+-- Table structure for ms_sysuser_role
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser_role";
+CREATE TABLE "sysusermgmt"."ms_sysuser_role" (
+  "role_id" int4 NOT NULL DEFAULT nextval('"sysusermgmt".test_c_id_seq'::regclass),
+  "role_name" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+  "remark" text COLLATE "pg_catalog"."default",
+  "delete_flag" bool NOT NULL DEFAULT false,
+  "create_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "update_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "create_time" timestamp(6),
+  "update_time" timestamp(6)
+)
+;
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role"."role_id" IS '角色id';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role"."role_name" IS '角色名';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role"."remark" IS '备注';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role"."delete_flag" IS '系统删除标志';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role"."create_user" IS '创建人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role"."update_user" IS '修改人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role"."create_time" IS '创建时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role"."update_time" IS '更新时间';
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser_role" IS '角色表';
+
+-- ----------------------------
+-- Table structure for ms_sysuser_role_with_right_mapping
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser_role_with_right_mapping";
+CREATE TABLE "sysusermgmt"."ms_sysuser_role_with_right_mapping" (
+  "mapp_id" int4 NOT NULL DEFAULT nextval('"sysusermgmt".test_c_id_seq'::regclass),
+  "role_id" int4 NOT NULL,
+  "right_id" int4 NOT NULL,
+  "right_type" int2 NOT NULL,
+  "remark" text COLLATE "pg_catalog"."default",
+  "delete_flag" bool NOT NULL DEFAULT false,
+  "create_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "update_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "create_time" timestamp(6),
+  "update_time" timestamp(6)
+)
+;
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."mapp_id" IS '角色与权限的映射id';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."role_id" IS '角色id';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."right_id" IS '权限id';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."right_type" IS '权限类型';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."remark" IS '备注';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."delete_flag" IS '系统删除标志';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."create_user" IS '创建人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."update_user" IS '修改人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."create_time" IS '创建时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_role_with_right_mapping"."update_time" IS '更新时间';
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser_role_with_right_mapping" IS '角色与权限关联表';
+
+-- ----------------------------
+-- Table structure for ms_sysuser_sub_right_data
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser_sub_right_data";
+CREATE TABLE "sysusermgmt"."ms_sysuser_sub_right_data" (
+  "data_id" int4 NOT NULL,
+  "data_name" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+  "data_type" int2 NOT NULL,
+  "data_value" int2 NOT NULL,
+  "remark" text COLLATE "pg_catalog"."default",
+  "delete_flag" bool NOT NULL DEFAULT false,
+  "create_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "update_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "create_time" timestamp(6),
+  "update_time" timestamp(6)
+)
+;
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."data_id" IS '来源于权限表的right_id
+';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."data_name" IS '权限名';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."data_type" IS '"1:数据范围；
+2:数据脱敏。"
+';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."data_value" IS '"数据可视范围有如下几个枚举值：
+6:可以查看全集团的数据；
+7:仅可查看本集团的数据；
+8:仅可查看本版块的数据；
+9:仅可查看本业态的数据）；
+10:仅可查看本门店的数据；
+
+数据脱敏有如下2个枚举值：
+0：不可以查看敏感数据；
+1：可以查看敏感数据"
+';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."remark" IS '备注';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."delete_flag" IS '系统删除标志';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."create_user" IS '创建人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."update_user" IS '修改人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."create_time" IS '创建时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_data"."update_time" IS '更新时间';
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser_sub_right_data" IS '数据类子权限表';
+
+-- ----------------------------
+-- Table structure for ms_sysuser_sub_right_element
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser_sub_right_element";
+CREATE TABLE "sysusermgmt"."ms_sysuser_sub_right_element" (
+  "element_id" int4 NOT NULL,
+  "element_name" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+  "element_code" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "element_type" int2 NOT NULL,
+  "element_url" varchar(255) COLLATE "pg_catalog"."default",
+  "parent_id" int4 NOT NULL,
+  "remark" text COLLATE "pg_catalog"."default",
+  "delete_flag" bool NOT NULL DEFAULT false,
+  "create_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "update_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "create_time" timestamp(6),
+  "update_time" timestamp(6)
+)
+;
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."element_id" IS '页面元素id';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."element_name" IS '页面元素名称';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."element_code" IS '页面元素编码';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."element_type" IS '"2:标签类的权限；
+3:功能按钮类的权限；
+4:链接按钮类的权限。"
+';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."element_url" IS '元素url';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."parent_id" IS '隶属的menu_id或者page_id';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."remark" IS '备注';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."delete_flag" IS '系统删除标志';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."create_user" IS '创建人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."update_user" IS '修改人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."create_time" IS '创建时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_element"."update_time" IS '更新时间';
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser_sub_right_element" IS '页面元素类子权限表';
+
+-- ----------------------------
+-- Table structure for ms_sysuser_sub_right_file
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser_sub_right_file";
+CREATE TABLE "sysusermgmt"."ms_sysuser_sub_right_file" (
+  "file_id" int4 NOT NULL,
+  "file_name" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+  "file_url" varchar(254) COLLATE "pg_catalog"."default" NOT NULL,
+  "remark" text COLLATE "pg_catalog"."default",
+  "delete_flag" bool NOT NULL DEFAULT false,
+  "create_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "update_user" varchar(20) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "create_time" timestamp(6),
+  "update_time" timestamp(6)
+)
+;
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_file"."file_id" IS '文件id';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_file"."file_name" IS '文件名称';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_file"."file_url" IS '文件路径';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_file"."remark" IS '备注';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_file"."delete_flag" IS '系统删除标志';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_file"."create_user" IS '创建人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_file"."update_user" IS '修改人';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_file"."create_time" IS '创建时间';
+COMMENT ON COLUMN "sysusermgmt"."ms_sysuser_sub_right_file"."update_time" IS '更新时间';
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser_sub_right_file" IS '文件类子权限表';
+
+-- ----------------------------
+-- Table structure for ms_sysuser_sub_right_menu
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser_sub_right_menu";
+CREATE TABLE "sysusermgmt"."ms_sysuser_sub_right_menu" (
+
+)
+;
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser_sub_right_menu" IS '菜单类子权限表';
+
+-- ----------------------------
+-- Table structure for ms_sysuser_with_right_mapping
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser_with_right_mapping";
+CREATE TABLE "sysusermgmt"."ms_sysuser_with_right_mapping" (
+
+)
+;
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser_with_right_mapping" IS '用户与权限关联表';
+
+-- ----------------------------
+-- Table structure for ms_sysuser_with_role_mapping
+-- ----------------------------
+DROP TABLE IF EXISTS "sysusermgmt"."ms_sysuser_with_role_mapping";
+CREATE TABLE "sysusermgmt"."ms_sysuser_with_role_mapping" (
+
+)
+;
+COMMENT ON TABLE "sysusermgmt"."ms_sysuser_with_role_mapping" IS '用户与角色关联表';
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+SELECT setval('"sysusermgmt"."ms_sysuser_id_seq"', 52, true);
+SELECT setval('"sysusermgmt"."ms_sysuser_with_right_mapping_id_seq"', 31832, true);
+SELECT setval('"sysusermgmt"."ms_sysuser_with_role_mapping_id_seq"', 137, true);
+SELECT setval('"sysusermgmt"."test_c_id_seq"', 110009201, true);
+
+-- ----------------------------
+-- Primary Key structure for table ms_sysuser
+-- ----------------------------
+ALTER TABLE "sysusermgmt"."ms_sysuser" ADD CONSTRAINT "ms_sysuser_pkey" PRIMARY KEY ("user_id");
+
+-- ----------------------------
+-- Indexes structure for table ms_sysuser_right
+-- ----------------------------
+CREATE INDEX "right_id_index" ON "sysusermgmt"."ms_sysuser_right" USING btree (
+  "right_id" "pg_catalog"."int4_ops" ASC NULLS LAST,
+  "right_type" "pg_catalog"."int2_ops" ASC NULLS LAST
+);
+
+-- ----------------------------
+-- Uniques structure for table ms_sysuser_right
+-- ----------------------------
+ALTER TABLE "sysusermgmt"."ms_sysuser_right" ADD CONSTRAINT "ms_sysuser_right_right_id_key" UNIQUE ("right_id");
+
+-- ----------------------------
+-- Primary Key structure for table ms_sysuser_right
+-- ----------------------------
+ALTER TABLE "sysusermgmt"."ms_sysuser_right" ADD CONSTRAINT "ms_sysuser_right_pkey" PRIMARY KEY ("right_id");
+
+-- ----------------------------
+-- Primary Key structure for table ms_sysuser_role
+-- ----------------------------
+ALTER TABLE "sysusermgmt"."ms_sysuser_role" ADD CONSTRAINT "ms_sysuser_role_pkey" PRIMARY KEY ("role_id");
+
+-- ----------------------------
+-- Uniques structure for table ms_sysuser_role_with_right_mapping
+-- ----------------------------
+ALTER TABLE "sysusermgmt"."ms_sysuser_role_with_right_mapping" ADD CONSTRAINT "ms_sysuser_role_with_right_mapping_role_id_right_id_key" UNIQUE ("role_id", "right_id");
+
+-- ----------------------------
+-- Primary Key structure for table ms_sysuser_role_with_right_mapping
+-- ----------------------------
+ALTER TABLE "sysusermgmt"."ms_sysuser_role_with_right_mapping" ADD CONSTRAINT "ms_sysuser_role_with_right_mapping_pkey" PRIMARY KEY ("mapp_id");
+
+-- ----------------------------
+-- Primary Key structure for table ms_sysuser_sub_right_data
+-- ----------------------------
+ALTER TABLE "sysusermgmt"."ms_sysuser_sub_right_data" ADD CONSTRAINT "ms_sysuser_sub_right_data_pkey" PRIMARY KEY ("data_id");
+
+-- ----------------------------
+-- Indexes structure for table ms_sysuser_sub_right_element
+-- ----------------------------
+CREATE INDEX "code_index" ON "sysusermgmt"."ms_sysuser_sub_right_element" USING btree (
+  "element_code" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+);
+
+-- ----------------------------
+-- Primary Key structure for table ms_sysuser_sub_right_element
+-- ----------------------------
+ALTER TABLE "sysusermgmt"."ms_sysuser_sub_right_element" ADD CONSTRAINT "ms_sysuser_sub_right_element_pkey" PRIMARY KEY ("element_id");
+
+-- ----------------------------
+-- Primary Key structure for table ms_sysuser_sub_right_file
+-- ----------------------------
+ALTER TABLE "sysusermgmt"."ms_sysuser_sub_right_file" ADD CONSTRAINT "ms_sysuser_sub_right_file_pkey" PRIMARY KEY ("file_id");
